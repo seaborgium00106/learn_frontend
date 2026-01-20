@@ -23,7 +23,7 @@ Before running this application, ensure you have:
 
 - **Node.js 18.x LTS or 20.x LTS** installed
 - **npm 9.x or 10.x** (comes with Node.js)
-- **Backend API running** on `http://localhost:9090` (Spring Boot application)
+- **Backend API running** on `http://localhost` (via NGINX load balancer) or `http://localhost:9091` (direct backend access)
 
 ## 🛠️ Installation & Setup
 
@@ -39,10 +39,16 @@ npm install
 Create a `.env` file in the `frontend` directory:
 
 ```env
-VITE_API_BASE_URL=http://localhost:9090
+# Uses NGINX load balancer on port 80 (recommended for Docker Compose)
+VITE_API_BASE_URL=http://localhost
 VITE_API_TIMEOUT=10000
 VITE_APP_NAME=Social Network
 VITE_DEFAULT_PAGE_SIZE=10
+```
+
+**Note:** For direct backend access without the load balancer, use:
+```env
+VITE_API_BASE_URL=http://localhost:9091
 ```
 
 ### 3. Set Up User Authentication
@@ -175,7 +181,7 @@ frontend/
 
 ## 🔌 API Integration
 
-The frontend connects to the backend API running on `http://localhost:9090`.
+The frontend connects to the backend API via NGINX load balancer on `http://localhost` (recommended for Docker Compose) or directly on `http://localhost:9091` for direct backend access.
 
 ### Backend Endpoints Used
 
@@ -248,7 +254,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 ### "Network Error" when making API calls
 
-- Ensure the backend is running on `http://localhost:9090`
+- Ensure the backend is running on `http://localhost` (NGINX) or `http://localhost:9091` (direct backend)
 - Check CORS configuration in the backend
 - Verify `.env` file has correct `VITE_API_BASE_URL`
 
